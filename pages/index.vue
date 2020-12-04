@@ -1,34 +1,71 @@
 <template>
-  <div class="container">
-    <div>
-      <Logo />
-      <h1 class="title">
-        todo-app
-      </h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+  <div class="container space-y-5 flex-col p-4">
+    <!-- create card -->
+    <div
+      class="p-4 px-8 max-w-4xl w-full shadow-lg flex justify-between items-center space-x-3 rounded-lg"
+    >
+      <div>
+        <GradCheckbox @checked="check" :checkedStats="inputChecked">
+          <input
+            type="text"
+            class="outline-none p-2"
+            placeholder="Create new Todo"
+            v-model="todoText"
+            @keyup.enter="saveTodo"
+          />
+        </GradCheckbox>
       </div>
+      <div>
+        <button @click="saveTodo" class="btn btn-gradient">Create</button>
+      </div>
+    </div>
+
+    <div class="p-4 max-w-4xl w-full shadow-lg flex flex-col rounded-lg">
+      <Todo
+        v-for="(todo, index) in todos"
+        :key="index"
+        :todoText="todo.todoText"
+        :checkedStats="todo.isChecked"
+      />
+      <span v-if="!todos.length" class="self-center text-gray-600"
+        >No Todos noted.</span
+      >
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+import Todo from "~/components/Todo";
+import GradCheckbox from "~/components/Checkbox";
+
+export default {
+  data: () => ({
+    todoText: "",
+    todos: [],
+    inputChecked: false,
+  }),
+  methods: {
+    saveTodo() {
+      if (!this.todoText) {
+        return
+      }  
+      console.log({ todoText: this.todoText, isChecked: this.inputChecked });
+      this.todos.push({
+        todoText: this.todoText,
+        isChecked: this.inputChecked,
+      });
+      this.todoText = "";
+      this.inputChecked = false;
+    },
+    check(val) {
+      this.inputChecked = val;
+    },
+  },
+  components: {
+    Todo,
+    GradCheckbox,
+  },
+};
 </script>
 
 <style>
@@ -37,42 +74,19 @@ export default {}
 @apply min-h-screen flex justify-center items-center text-center mx-auto;
 }
 */
+
+.btn {
+  @apply p-3 shadow outline-none text-white rounded-xl;
+}
+.btn:focus {
+  @apply outline-none;
+}
+
+.btn-gradient {
+  background: linear-gradient(45deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+}
+
 .container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+  @apply min-h-screen flex justify-center items-center mx-auto;
 }
 </style>
