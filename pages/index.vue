@@ -4,16 +4,16 @@
     <div
       class="p-4 px-8 max-w-4xl w-full shadow-lg flex justify-between items-center space-x-3 rounded-lg"
     >
-      <div>
-        <GradCheckbox @checked="check" :checkedStats="inputChecked">
+      <div class="w-full">
+        <!-- <GradCheckbox @checked="check" :checkedStats="inputChecked">
+        </GradCheckbox> -->
           <input
             type="text"
-            class="outline-none p-2"
+            class="outline-none w-full p-2"
             placeholder="Create new Todo"
             v-model="todoText"
             @keyup.enter="saveTodo"
           />
-        </GradCheckbox>
       </div>
       <div>
         <button @click="saveTodo" class="btn btn-gradient">Create</button>
